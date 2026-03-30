@@ -13,6 +13,14 @@ public class Harvest extends FarmProduct implements Sellable {
     }
 
     @Override
+    public String toString(){
+        return "Harvest{name=" + getName() +
+                ", totalYield=" + totalYield +" " +
+                ", pricePerKg=" + pricePerKg +
+                '}';
+    }
+
+    @Override
     public double calculateRevenue() {
         return totalYield * pricePerKg;
     }

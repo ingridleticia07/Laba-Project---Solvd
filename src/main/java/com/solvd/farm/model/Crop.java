@@ -13,6 +13,11 @@ public class Crop extends CostItem implements Costable {
     }
 
     @Override
+    public String toString(){
+        return "Crop{name=" +getName()+", cost="+cost+", quantity="+quantity+"}";
+    }
+
+    @Override
     public double calculateCost() {
         return cost * quantity;
     }

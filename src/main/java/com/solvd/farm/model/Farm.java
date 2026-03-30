@@ -4,8 +4,11 @@ import main.java.com.solvd.farm.exception.InsufficientFundsException;
 import main.java.com.solvd.farm.exception.InsufficientResourcesException;
 import main.java.com.solvd.farm.exception.NoProfitException;
 import main.java.com.solvd.farm.interfaces.*;
+import main.java.com.solvd.farm.util.Calculator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.Arrays;
 
 public class Farm implements Reportable {
 
@@ -54,14 +57,21 @@ public class Farm implements Reportable {
 
         logger.info("===== Processing Season =====");
 
-        for (Costable item : crops) {
-            totalCropCost += item.calculateCost();
-        }
+        Calculator<Costable> calculator = new Calculator<>();
+        Calculator<Sellable> revenueCalculator = new Calculator<>();
+        Calculator<Maintainable> maintainerCalculator = new Calculator<>();
+
+        totalCropCost = calculator.calculateTotal(Arrays.asList(crops));
+
+//        for (Costable item : crops) {
+//            totalCropCost += item.calculateCost();
+//        }
         logger.info("Crop cost: {}", totalCropCost);
 
-        for (Costable item : foodSupplies) {
-            totalFoodSupplyCost += item.calculateCost();
-        }
+//        for (Costable item : foodSupplies) {
+//            totalFoodSupplyCost += item.calculateCost();
+//        }
+        totalFoodSupplyCost = calculator.calculateTotal(Arrays.asList(foodSupplies));
         logger.info("Food Supply cost: {}", totalFoodSupplyCost);
 
         double totalFoodNeeded = 0;
@@ -78,21 +88,24 @@ public class Farm implements Reportable {
 
         logger.info("Animal food cost: {}", totalFoodCost);
 
-        for (Maintainable item : maintainables) {
-            totalMaintenance += item.calculateMaintenanceCost();
-        }
+//        for (Maintainable item : maintainables) {
+//            totalMaintenance += item.calculateMaintenanceCost();
+//        }
+        totalMaintenance = calculator.calculateMaintenanceTotal(Arrays.asList(maintainables));
         logger.info("Maintenance cost: {}", totalMaintenance);
 
         double productRevenue = 0;
-        for (Sellable item : products) {
-            productRevenue += item.calculateRevenue();
-        }
+//        for (Sellable item : products) {
+//            productRevenue += item.calculateRevenue();
+//        }
+        productRevenue = calculator.calculateRevenueTotal(Arrays.asList(products));
         logger.info("Product revenue: {}", productRevenue);
 
         double harvestRevenue = 0;
-        for (Sellable item : harvests) {
-            harvestRevenue += item.calculateRevenue();
-        }
+//        for (Sellable item : harvests) {
+//            harvestRevenue += item.calculateRevenue();
+//        }
+        harvestRevenue = calculator.calculateRevenueTotal(Arrays.asList(harvests));
         logger.info("Harvest revenue: {}", harvestRevenue);
 
         double totalRevenue = productRevenue + harvestRevenue;
